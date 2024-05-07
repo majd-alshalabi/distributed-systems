@@ -8,7 +8,7 @@ public class Server {
     public static void main(String[] args) {
         try {
             // إنشاء ريجستري RMI
-            LocateRegistry.createRegistry(1019);
+            LocateRegistry.createRegistry(1099);
 
             // إنشاء الخادم وربطه بالريجستري
             MyRemoteInterface server = new MyRemoteImplementation();
