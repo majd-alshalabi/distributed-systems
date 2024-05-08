@@ -56,8 +56,11 @@ public class Manager {
         BufferedImage bufferedImage = ImageIO.read(bais);
         showImage(bufferedImage);
     }
-    private static void choiceTwoHandle() throws RemoteException {
-        server.getCameraImage(showUsersIdsAndGetManagerInput());
+    private static void choiceTwoHandle() throws IOException {
+        final  byte[] image = server.getCameraImage(showUsersIdsAndGetManagerInput());
+        ByteArrayInputStream bais = new ByteArrayInputStream(image);
+        BufferedImage bufferedImage = ImageIO.read(bais);
+        showImage(bufferedImage);
     }
     private static String showUsersIdsAndGetManagerInput() throws RemoteException {
         final List<String> ids = server.getClientIds();
