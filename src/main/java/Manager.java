@@ -1,3 +1,5 @@
+import core.service.ChatUtils;
+import core.service.MessageModel;
 import core.service.MyRemoteInterface;
 
 import javax.imageio.ImageIO;
@@ -8,6 +10,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.*;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -15,10 +18,11 @@ import java.util.Scanner;
 
 public class Manager {
     static  MyRemoteInterface server ;
-
+    static final ChatUtils chatUtils = new ChatUtils("Manager");
     public static void main(String[] args) {
         try {
             server = (MyRemoteInterface) Naming.lookup("//localhost/MyRemoteServer");
+            chatUtils.initial();
             while (true){
                 showOption();
                 try{
@@ -40,6 +44,7 @@ public class Manager {
         System.out.println(
                 "1- get client screenshot \n" +
                 "2- get client camera image\n" +
+                "3- chat with Client\n" +
                 "0- end connection with server\n"
         );
     }
@@ -48,6 +53,8 @@ public class Manager {
             choiceOneHandle();
         }else if(choice == 2){
             choiceTwoHandle();
+        }else if(choice == 3){
+            choiceThreeHandle();
         }
     }
     private static void choiceOneHandle() throws IOException {
@@ -55,6 +62,12 @@ public class Manager {
         ByteArrayInputStream bais = new ByteArrayInputStream(image);
         BufferedImage bufferedImage = ImageIO.read(bais);
         showImage(bufferedImage);
+    }
+    private static void choiceThreeHandle() throws IOException {
+        sendMessage();
+    }
+    private static void sendMessage() throws IOException {
+        chatUtils.sendMessage();
     }
     private static void choiceTwoHandle() throws IOException {
         final  byte[] image = server.getCameraImage(showUsersIdsAndGetManagerInput());
@@ -88,3 +101,4 @@ public class Manager {
         frame.setVisible(true);
     }
 }
+
